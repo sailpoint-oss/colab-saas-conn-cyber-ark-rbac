@@ -1,0 +1,202 @@
+{
+	"name": "colab-saas-conn-cyberark-rbac",
+	"commands": [
+		"std:account:create",
+		"std:account:enable",
+		"std:account:disable",
+		"std:account:list",
+		"std:account:read",
+		"std:account:update",
+		"std:entitlement:list",
+		"std:test-connection"
+	],
+	"sourceConfig": [{
+		"type": "menu",
+		"label": "Configuration",
+		"items": [{
+			"type": "section",
+			"sectionTitle": "Authentication",
+			"sectionHelpMessage": "Provide connection parameters to interact securely with the target application.",
+			"items": [{
+					"key": "identityTenantUrl",
+					"label": "Identity Tenant URL",
+					"type": "url",
+					"required": true
+				},
+				{
+					"key": "clientId",
+					"label": "Client Id",
+					"type": "text",
+					"required": true
+				},
+				{
+					"key": "clientSecret",
+					"label": "Client Secret",
+					"type": "secret",
+					"required": true
+				},
+				{
+					"key": "oauthAppId",
+					"label": "OAuth Application Id",
+					"type": "text",
+					"required": true
+				},
+				{
+					"key": "oauthScope",
+					"label": "OAuth Scope(s)",
+					"type": "text",
+					"required": true
+				},
+				{
+					"key": "safeRoles",
+					"label": "Safe Roles",
+					"type": "textarea",
+					"required": true
+				},
+				{
+					"key": "safeRights",
+					"label": "Safe Rights",
+					"type": "textarea",
+					"required": true
+				},
+				{
+					"key": "accountSource",
+					"type": "select",
+					"label": "Account Source",
+					"required": true,
+					"options": [{
+							"label": "Active Directory",
+							"value": "activeDirectory"
+						},
+						{
+							"label": "CyberArk Cloud Directory",
+							"value": "cyberArk"
+						}
+					]
+				},
+				{
+					"key": "directoryServiceId",
+					"type": "text",
+					"label": "Directory Service Id",
+					"parentKey": "accountSource",
+					"parentValue": "activeDirectory",
+					"required": true
+				},
+				{
+					"key": "ignoreSSL",
+					"label": "Ignore SSL errors?",
+					"type": "checkbox",
+					"required": false
+				}
+			]
+		}]
+	}],
+	"accountSchema": {
+		"displayAttribute": "userName",
+		"identityAttribute": "id",
+		"attributes": [{
+				"name": "id",
+				"type": "string",
+				"description": "Identity SCIM Id of the user"
+			},
+			{
+				"name": "userName",
+				"type": "string",
+				"description": "Email address of the user"
+			},
+			{
+				"name": "active",
+				"type": "boolean",
+				"description": "User status"
+			},
+			{
+				"name": "groups",
+				"type": "string",
+				"description": "Groups a user belongs to",
+				"entitlement": true,
+				"managed": true,
+				"multi": true
+			},
+			{
+				"name": "safeRoles",
+				"type": "string",
+				"description": "Safe roles assigned to a user",
+				"entitlement": true,
+				"managed": true,
+				"multi": true
+			},
+			{
+				"name": "safeRights",
+				"type": "string",
+				"description": "Safe rights assigned to a user",
+				"entitlement": true,
+				"managed": true,
+				"multi": true
+			}
+		]
+	},
+	"entitlementSchemas": [{
+			"type": "group",
+			"identityAttribute": "id",
+			"displayAttribute": "displayName",
+			"attributes": [{
+					"name": "id",
+					"type": "string",
+					"description": ""
+				},
+				{
+					"name": "displayName",
+					"type": "string",
+					"description": ""
+				},
+				{
+					"name": "description",
+					"type": "string",
+					"description": ""
+				}
+			]
+		},
+		{
+			"type": "safeRole",
+			"identityAttribute": "id",
+			"displayAttribute": "displayName",
+			"attributes": [{
+					"name": "id",
+					"type": "string",
+					"description": ""
+				},
+				{
+					"name": "displayName",
+					"type": "string",
+					"description": ""
+				},
+				{
+					"name": "description",
+					"type": "string",
+					"description": ""
+				}
+			]
+		},
+		{
+			"type": "safeRight",
+			"identityAttribute": "id",
+			"displayAttribute": "displayName",
+			"attributes": [{
+					"name": "id",
+					"type": "string",
+					"description": ""
+				},
+				{
+					"name": "displayName",
+					"type": "string",
+					"description": ""
+				},
+				{
+					"name": "description",
+					"type": "string",
+					"description": ""
+				}
+			]
+		}
+	]
+}
