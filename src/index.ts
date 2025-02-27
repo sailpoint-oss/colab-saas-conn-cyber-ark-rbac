@@ -409,12 +409,20 @@ export const connector = async () => {
             logger.info(`Aggregating entitlement type ${input.type}...`)
             if (input.type == 'group') {
                 const group_response = await httpClient.getAllGroups()
+                const safe_permissions: AxiosResponse = await httpClient.getAllSafePermissions()
                 for (const group of group_response.data.Resources) {
                     const role = await httpClient.getRole(group.id)
+                    const group_safe_permissions = safe_permissions.data.Resources.filter(
+                        (resource: any) => resource.group?.value === group.id
+                    )
                     const response: Group = new Group({
                         id: group.id,
                         displayName: group.displayName,
                         description: role.data.Result.Description,
+                        permissions:  group_safe_permissions.map((permission: any) => ({
+                            target: permission.container.value,
+                            rights: permission.rights.toString(),
+                        }))
                     })
                     res.send(response)
                 }
