@@ -307,7 +307,6 @@ export const connector = async () => {
         })
         .stdAccountCreate(
             async (context: Context, input: StdAccountCreateInput, res: Response<StdAccountCreateOutput>) => {
-                //Checks to see if account already exists, in case it was created outside of IdN in between aggregations
                 logger.info(JSON.stringify(input))
                 let account
 
@@ -434,6 +433,11 @@ export const connector = async () => {
                                     id: `${safe.id} - ${role.name}`,
                                     displayName: `${safe.id} - ${role.name}`,
                                     description: role.description,
+                                    permissions: [{
+                                        "target": safe.id,
+                                        "rights": role.rights.toString()
+                                    }]
+
                                 })
                                 res.send(response)
                             }
@@ -444,6 +448,10 @@ export const connector = async () => {
                                     id: `${safe.id} - ${right.name}`,
                                     displayName: `${safe.id} - ${right.name}`,
                                     description: right.description,
+                                    permissions: [{
+                                        "target": safe.id,
+                                        "rights": right.name
+                                    }]
                                 })
                                 res.send(response)
                             }
