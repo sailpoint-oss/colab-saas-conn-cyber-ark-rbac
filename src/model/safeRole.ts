@@ -1,10 +1,12 @@
 import { Attributes } from "@sailpoint/connector-sdk";
+import { Permission } from "@sailpoint/connector-sdk";
 
 export class SafeRole {
     identity: string
     uuid: string
     type: string = 'safeRole'
     attributes: Attributes
+    permissions: Permission[]
 
     constructor(object: any) {
         this.attributes = {
@@ -14,5 +16,6 @@ export class SafeRole {
         }
         this.identity = this.attributes.id as string
         this.uuid = this.attributes.displayName as string
+        this.permissions = object.permissions
     }
 }
