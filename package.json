@@ -15,7 +15,7 @@
   },
   "private": true,
   "dependencies": {
-    "@sailpoint/connector-sdk": "1.1.13",
+    "@sailpoint/connector-sdk": "^1.1.22",
     "axios": "^1.7.7"
   },
   "devDependencies": {
