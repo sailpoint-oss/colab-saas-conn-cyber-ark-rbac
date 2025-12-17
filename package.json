@@ -9,13 +9,13 @@
     "dev": "cross-env NODE_OPTIONS=--enable-source-maps spcx run dist/index.js",
     "debug": "spcx run dist/index.js",
     "prettier": "npx prettier --write .",
-    "test": "jest --coverage",
+    "test": "jest --coverage --passWithNoTests",
     "prepack-zip": "npm ci && npm run build",
     "pack-zip": "spcx package"
   },
   "private": true,
   "dependencies": {
-    "@sailpoint/connector-sdk": "1.1.13",
+    "@sailpoint/connector-sdk": "^1.1.22",
     "axios": "^1.7.7"
   },
   "devDependencies": {
