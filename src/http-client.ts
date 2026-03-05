@@ -53,6 +53,13 @@ export class HTTPClient {
     }
 
     async getAccessToken(): Promise<string | undefined> {
+        const params = new URLSearchParams({
+            client_id: this.clientId,
+            client_secret: this.clientSecret,
+            grant_type: 'client_credentials',
+            scope: this.oauthScope,
+        })
+
         const request: AxiosRequestConfig = {
             method: 'post',
             baseURL: this.identityTenantUrl,
@@ -60,10 +67,9 @@ export class HTTPClient {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 Accept: 'application/json',
             },
-            data: `client_id=${this.clientId}&client_secret=${this.clientSecret}&grant_type=client_credentials&scope=${this.oauthScope}`,
+            data: params.toString(),
             url: `/oauth2/token/${this.oauthAppId}`,
         }
-        const url = axios.getUri(request)
 
         const response: AxiosResponse = await axios(request)
         this.accessToken = response.data.access_token
@@ -73,7 +79,7 @@ export class HTTPClient {
 
     async getAllAccounts(filter: string = ''): Promise<AxiosResponse> {
         const accessToken = await this.getAccessToken()
- 
+
         let request: AxiosRequestConfig = {
             method: 'get',
             baseURL: this.getEndpoint('user'),
@@ -177,7 +183,7 @@ export class HTTPClient {
             })
     }
 
-    async updateGroup(id: string,body: object): Promise<AxiosResponse> {
+    async updateGroup(id: string, body: object): Promise<AxiosResponse> {
         const accessToken = await this.getAccessToken()
 
         let request: AxiosRequestConfig = {
@@ -224,7 +230,7 @@ export class HTTPClient {
                 Authorization: `Bearer ${accessToken}`,
                 Accept: 'application/json',
             },
-            data: {"Name": id}
+            data: { "Name": id }
         }
 
         return axios(request)
@@ -356,7 +362,7 @@ export class HTTPClient {
             })
     }
 
-    async manageSafePermissions(id: string,requestBody: object,method: string): Promise<AxiosResponse> {
+    async manageSafePermissions(id: string, requestBody: object, method: string): Promise<AxiosResponse> {
         const accessToken = await this.getAccessToken()
 
         let request: AxiosRequestConfig = {
@@ -369,7 +375,7 @@ export class HTTPClient {
             data: requestBody
         }
 
-        if(method == 'put' || method == 'delete'){
+        if (method == 'put' || method == 'delete') {
             request.url = `/${id}`
         }
 
@@ -437,7 +443,7 @@ export class HTTPClient {
             })
     }
 
-    async createUesrInvite(id: string,userName: string): Promise<AxiosResponse> {
+    async createUesrInvite(id: string, userName: string): Promise<AxiosResponse> {
         const accessToken = await this.getAccessToken()
 
         let request: AxiosRequestConfig = {
